@@ -1,6 +1,6 @@
 # SRPA-Net
 
-Official PyTorch implementation of **SRPA-Net** for hyperspectral oil spill binary segmentation (Global Spectral Reliability + Spectral Detail Compensation built upon a frozen pretrained SpecAware backbone).
+Official PyTorch implementation of **SRPA-Net** for hyperspectral oil spill binary segmentation (Global Spectral Reliability + Spectral Detail Compensation built upon a frozen pretrained SPRA-Net backbone).
 
 ## 1. Repository Structure
 
@@ -12,7 +12,7 @@ SRPA-Net/
 ├── configs/
 │   ├── selected_spectral_detail.json       # Main experiment config (Global Spectral Reliability + Spectral Detail)
 │   ├── sensor_metadata_224.json            # 224-band center wavelengths, FWHM, and sensor metadata
-│   └── text_embeddings.pt                  # Pre-cached SpecAware attribute text embeddings
+│   └── text_embeddings.pt                  # Pre-cached SPRA-Net attribute text embeddings
 ├── environment/
 │   ├── environment.yml                     # Conda environment specification
 │   └── requirements.txt                    # Python package requirements
@@ -20,14 +20,14 @@ SRPA-Net/
 │   └── train_selected.sh                   # Convenience launch script for the main experiment
 ├── src/
 │   ├── __init__.py
-│   ├── model.py                            # SRPANet base class, spectral reliability estimator, and SpecAware wrapper
+│   ├── model.py                            # SRPANet base class, spectral reliability estimator, and SPRA-Net wrapper
 │   ├── innovations.py                      # Spectral detail compensation branch (SpectralDetail) and full model
 │   ├── data.py                             # 224-band oil spill tile dataset loader and metadata utilities
 │   ├── runtime.py                          # GhostBatchNorm, mixed-precision fallback, and fused optimizer controls
 │   └── experiment_controls.py              # Training schedules, loss functions, and optimizer parameter grouping
 └── vendor/
-    ├── SpecAware_README.md                 # Upstream SpecAware documentation
-    ├── specaware/                          # Pretrained SpecAware encoder and UPerNet decoder
+    ├── SPRA-Net_README.md                 # Upstream SPRA-Net documentation
+    ├── SPRA-Net/                          # Pretrained SPRA-Net encoder and UPerNet decoder
     └── benchmark/                          # Dataset cache reader and spatial augmentation utilities
 ```
 
@@ -49,14 +49,14 @@ The code has been verified in the following environment (an NVIDIA GPU with CUDA
 
 ```bash
 conda env create -f environment/environment.yml
-conda activate SpecAware
+conda activate SPRA-Net
 ```
 
 ### Option 2: Manual Conda + Pip Installation
 
 ```bash
-conda create -n SpecAware python=3.11.11 -y
-conda activate SpecAware
+conda create -n SPRA-Net python=3.11.11 -y
+conda activate SPRA-Net
 
 # Install geospatial and scientific dependencies (GDAL 3.6.2 requires the NumPy 1.x ABI)
 conda install -y gdal=3.6.2 "numpy<2" rasterio netcdf4 pandas scipy
@@ -70,14 +70,14 @@ pip install -r environment/requirements.txt
 
 ## 3. Pretrained Weights & Data Preparation
 
-### 3.1 Download Pretrained SpecAware Weights
+### 3.1 Download Pretrained SPRA-Net Weights
 
-Download `SpecAware_Base_model.pth` from the [official SpecAware link](https://r2-proxy.3sobs.top/f6UhnB) (see [vendor/SpecAware_README.md](vendor/SpecAware_README.md)) and place it at:
+Download `SPRA-Net_Base_model.pth` from the [official SPRA-Net link](https://r2-proxy.3sobs.top/f6UhnB) (see [vendor/SPRA-Net_README.md](vendor/SPRA-Net_README.md)) and place it at:
 
 ```text
 SRPA-Net/
 └── checkpoints/
-    └── SpecAware_Base_model.pth
+    └── SPRA-Net_Base_model.pth
 ```
 
 ### 3.2 Prepare the 224-Band Tile Dataset Cache
@@ -100,12 +100,12 @@ SRPA-Net/
 
 ## 4. Reproducing the Main Experiment
 
-The main experiment freezes the pretrained SpecAware encoder and trains the global spectral reliability estimator, full-resolution spectral detail compensation branch, and UPerNet segmentation head (224 bands, seed 42, effective batch size 8, AdamW with `lr=1e-4`, 20,000 updates, validation every 500 steps with best-checkpoint selection by validation mIoU).
+The main experiment freezes the pretrained SPRA-Net encoder and trains the global spectral reliability estimator, full-resolution spectral detail compensation branch, and UPerNet segmentation head (224 bands, seed 42, effective batch size 8, AdamW with `lr=1e-4`, 20,000 updates, validation every 500 steps with best-checkpoint selection by validation mIoU).
 
 ### Training and Evaluation
 
 ```bash
-conda activate SpecAware
+conda activate SPRA-Net
 python run_experiments.py \
   --config configs/selected_spectral_detail.json \
   --run-dir runs/srpa_net
@@ -151,4 +151,4 @@ Inference outputs:
 
 ## 6. Acknowledgements
 
-The backbone encoder and decoder are built upon [SpecAware](https://www.sciencedirect.com/science/article/pii/S0924271626000754). We thank the authors for releasing their pretrained weights and code.
+The backbone encoder and decoder are built upon [SPRA-Net](https://www.sciencedirect.com/science/article/pii/S0924271626000754). We thank the authors for releasing their pretrained weights and code.

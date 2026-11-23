@@ -1,0 +1,14 @@
+name: SpecAware
+channels:
+  - defaults
+  - nodefaults
+dependencies:
+  - python=3.11.11
+  - gdal=3.6.2
+  - numpy<2
+  - rasterio
+  - netcdf4
+  - pandas
+  - pip
+  - pip:
+      - -r requirements.txt

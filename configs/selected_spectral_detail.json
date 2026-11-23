@@ -1,0 +1,50 @@
+{
+  "name": "SRPA-Net selected global reliability + spectral detail",
+  "model_family": "srpa_innovations_v2",
+  "report_script": "/data/SRPA-Net/reports/collect_completed_experiments.py",
+  "seed": 42,
+  "pretrained_checkpoint": "/data/SRPA-Net/checkpoints/SpecAware_Base_model.pth",
+  "metadata": "/data/SRPA-Net/configs/sensor_metadata_224.json",
+  "text_embeddings": "/data/SRPA-Net/configs/text_embeddings.pt",
+  "cache_root": "/home/chic/oilspill_benchmark_cache/224_fullbands",
+  "band_indices": null,
+  "max_steps": 20000,
+  "batch_size": 8,
+  "micro_batch": 4,
+  "workers": 4,
+  "lr": 0.0001,
+  "betas": [
+    0.9,
+    0.95
+  ],
+  "weight_decay": 0.0001,
+  "val_interval": 500,
+  "checkpoint_interval": 500,
+  "adapter_rank": 16,
+  "experts": 4,
+  "activation_checkpointing": true,
+  "precision": "fp16_mixed",
+  "variant_labels": {
+    "spectral_detail": "全局可靠性＋光谱细节补偿（优选版本复跑）"
+  },
+  "variants": {
+    "spectral_detail": {
+      "use_reliability": true,
+      "use_adapters": false,
+      "local_reliability": false,
+      "spatial_adapter": false,
+      "spectral_detail": true
+    }
+  },
+  "experimental_design": "Single selected spectral_detail architecture rerun from official pretraining; no local reliability or adapters. Architecture selected after viewing exploratory test results.",
+  "runtime_defaults": {
+    "activation_checkpointing": false,
+    "defer_conv_checks": true,
+    "fused_adamw": true,
+    "micro_batch": 8,
+    "ghost_batch_size": 4,
+    "fp32_retry_micro_batch": 4,
+    "effective_batch": 8,
+    "reason": "Reuse the measured accelerated execution settings from the completed innovations v2 run, enabled from initialization."
+  }
+}

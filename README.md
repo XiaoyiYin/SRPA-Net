@@ -193,18 +193,7 @@ Across three random seeds (Comparison batch, Table II), SRPA-Net achieves **49.8
   <em>Fig. 2. Full-scene segmentation maps on GM01, GM04, and GM09. Cyan indicates oil spills, dark blue indicates water, and red dashed boxes highlight regions for comparison.</em>
 </p>
 
-## 7. Citation
 
-If you find this work helpful in your research, please consider citing:
-
-```bibtex
-@article{shen2026srpanet,
-  title   = {Spectral Reliability-Guided Pretrained Adaptation Network for Hyperspectral Oil Spill Segmentation},
-  author  = {Shen, Wei and Yin, Xiaoyi and Sabela-Rikhotso, Phindile Tiyiselani Zanele and Gulakhmadov, Aminjon and Chaichana, Ratcha and Li, Yongqing},
-  journal = {IEEE Geoscience and Remote Sensing Letters},
-  year    = {2026}
-}
-```
 
 ## 8. Acknowledgements
 
